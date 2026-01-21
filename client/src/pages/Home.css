@@ -1,0 +1,295 @@
+.home {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* 메인 배너 */
+.hero-banner {
+  background: #1a1a1a;
+  color: #ffffff;
+  padding: 6rem 2rem;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-container {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  position: relative;
+  width: 100%;
+}
+
+.camera-display {
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  min-height: 500px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  max-width: 1200px;
+  max-height: 600px;
+}
+
+.image-slider {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+}
+
+.slider-indicator {
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+/* 제품 섹션 */
+.products-section {
+  padding: 4rem 2rem;
+  background: #f8f9fa;
+}
+
+.products-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.loading,
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.product-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.product-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: #007bff;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.product-wishlist {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.product-wishlist:hover {
+  background: #fff;
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
+
+.product-image {
+  font-size: 8rem;
+  text-align: center;
+  margin: 2rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.product-image img {
+  width: 100%;
+  max-width: 280px;
+  max-height: 280px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  font-size: 0;
+}
+
+.product-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+  min-height: 2.8rem;
+}
+
+.product-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* 푸터 */
+.home-footer {
+  background: #2c2c2c;
+  color: #ccc;
+  padding: 3rem 2rem 2rem;
+}
+
+.footer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.footer-links {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+.footer-info {
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+  font-size: 0.85rem;
+}
+
+.footer-info p {
+  margin: 0.3rem 0;
+  color: #999;
+}
+
+.footer-social {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.footer-social span {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.footer-social span:hover {
+  color: #fff;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+  .hero-banner {
+    padding: 4rem 2rem;
+    min-height: 60vh;
+  }
+
+  .camera-display {
+    max-width: 900px;
+    min-height: 400px;
+  }
+
+  .camera-image {
+    max-width: 900px;
+    max-height: 450px;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-banner {
+    padding: 3rem 1rem;
+    min-height: 50vh;
+  }
+
+  .camera-display {
+    max-width: 100%;
+    min-height: 300px;
+  }
+
+  .camera-image {
+    max-width: 100%;
+    max-height: 350px;
+  }
+
+  .products-section {
+    padding: 2rem 1rem;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .footer-links {
+    gap: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .footer-info {
+    font-size: 0.75rem;
+  }
+}

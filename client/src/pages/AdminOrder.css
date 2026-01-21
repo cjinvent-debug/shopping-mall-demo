@@ -1,0 +1,370 @@
+.admin-order {
+  min-height: 100vh;
+  background: #f5f5f5;
+  position: relative;
+}
+
+.admin-order-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  padding-top: 6rem;
+}
+
+.back-button {
+  background: transparent;
+  border: none;
+  color: #666;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  margin-bottom: 1rem;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.back-button:hover {
+  color: #333;
+}
+
+.admin-order-content {
+  background: white;
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.admin-header {
+  margin-bottom: 2rem;
+}
+
+.admin-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-icon {
+  font-size: 1.8rem;
+}
+
+/* 탭 메뉴 */
+.admin-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+}
+
+.tab-button:hover {
+  color: #333;
+}
+
+.tab-button.active {
+  color: #dc3545;
+  border-bottom-color: #dc3545;
+}
+
+/* 통계 섹션 */
+.order-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.stat-value.status-pending {
+  color: #ffc107;
+}
+
+.stat-value.status-payment-completed {
+  color: #28a745;
+}
+
+.stat-value.status-preparing {
+  color: #17a2b8;
+}
+
+.stat-value.status-shipping {
+  color: #007bff;
+}
+
+.stat-value.status-delivered {
+  color: #28a745;
+}
+
+.stat-value.status-cancelled {
+  color: #dc3545;
+}
+
+/* 필터 섹션 */
+.filter-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.filter-section label {
+  font-weight: 600;
+  color: #333;
+}
+
+.status-filter {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+}
+
+.status-filter:focus {
+  outline: none;
+  border-color: #dc3545;
+}
+
+/* 주문 목록 테이블 */
+.orders-section {
+  padding: 2rem 0;
+}
+
+.orders-table-container {
+  overflow-x: auto;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.orders-table thead {
+  background: #f8f9fa;
+}
+
+.orders-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #e0e0e0;
+  white-space: nowrap;
+}
+
+.orders-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: middle;
+}
+
+.orders-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.orders-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.order-number {
+  font-weight: 600;
+  color: #dc3545;
+  font-family: monospace;
+}
+
+.order-date {
+  font-size: 0.9rem;
+  color: #666;
+  white-space: nowrap;
+}
+
+.order-user {
+  font-size: 0.9rem;
+}
+
+.user-email {
+  font-size: 0.85rem;
+  color: #999;
+  margin-top: 0.25rem;
+}
+
+.order-items {
+  max-width: 300px;
+}
+
+.items-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.item-preview {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.more-items {
+  font-size: 0.85rem;
+  color: #999;
+  font-style: italic;
+}
+
+.order-amount {
+  font-weight: 600;
+  color: #dc3545;
+  white-space: nowrap;
+}
+
+.status-badge,
+.payment-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-badge.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.status-payment-completed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.status-preparing {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-badge.status-shipping {
+  background: #cce5ff;
+  color: #004085;
+}
+
+.status-badge.status-delivered {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.status-cancelled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.payment-badge.payment-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.payment-badge.payment-completed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.payment-badge.payment-failed {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.payment-badge.payment-refunded {
+  background: #e2e3e5;
+  color: #383d41;
+}
+
+.status-select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background: white;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.status-select:focus {
+  outline: none;
+  border-color: #dc3545;
+}
+
+.empty-state,
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 1200px) {
+  .orders-table-container {
+    overflow-x: scroll;
+  }
+
+  .orders-table {
+    min-width: 1000px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-order-container {
+    padding: 1rem;
+    padding-top: 6rem;
+  }
+
+  .order-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filter-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

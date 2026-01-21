@@ -1,0 +1,21 @@
+{
+  "name": "shopping-mall-demo",
+  "version": "1.0.0",
+  "description": "Shopping Mall Demo - Full Stack Application",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "dev:all": "concurrently -n \"SERVER,CLIENT\" -c \"blue,green\" \"npm run dev:server\" \"npm run dev:client\"",
+    "start": "npm start --prefix server",
+    "start:server": "npm start --prefix server",
+    "build": "npm run build --prefix client",
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client",
+    "install:server": "npm install --prefix server",
+    "install:client": "npm install --prefix client"
+  },
+  "keywords": ["shopping-mall", "react", "express", "mongodb"],
+  "author": "",
+  "license": "ISC"
+}
