@@ -1,0 +1,13 @@
+{
+  "build": {
+    "command": "npm install",
+    "directory": "server"
+  },
+  "run": {
+    "command": "npm start",
+    "directory": "server"
+  },
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

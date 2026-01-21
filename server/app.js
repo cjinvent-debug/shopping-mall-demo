@@ -13,10 +13,21 @@ const allowedOrigins = process.env.NODE_ENV === 'production'
     ].filter(Boolean) // null 값 제거
   : ['http://localhost:3000', 'http://localhost:3002', 'http://localhost:5173'];
 
+// 프로덕션 환경에서 CLIENT_URL이 없으면 경고 출력
+if (process.env.NODE_ENV === 'production' && !process.env.CLIENT_URL) {
+  console.warn('⚠️  WARNING: CLIENT_URL 환경 변수가 설정되지 않았습니다. CORS 오류가 발생할 수 있습니다.');
+}
+
 app.use(cors({
   origin: (origin, callback) => {
-    // origin이 없으면 (같은 도메인에서 요청) 허용
+    // origin이 없으면 (같은 도메인에서 요청 또는 서버 간 통신) 허용
     if (!origin) return callback(null, true);
+    
+    // 프로덕션 환경에서 allowedOrigins가 비어있으면 모든 origin 허용 (임시)
+    if (process.env.NODE_ENV === 'production' && allowedOrigins.length === 0) {
+      console.warn(`⚠️  CORS: CLIENT_URL이 설정되지 않아 모든 origin을 허용합니다: ${origin}`);
+      return callback(null, true);
+    }
     
     // 허용된 origin인지 확인
     if (allowedOrigins.includes(origin)) {
@@ -27,6 +38,8 @@ app.use(cors({
         console.warn(`⚠️  CORS: 허용되지 않은 origin: ${origin}`);
         callback(null, true); // 개발 환경에서는 모든 origin 허용
       } else {
+        console.error(`❌ CORS: 허용되지 않은 origin: ${origin}`);
+        console.error(`   허용된 origins: ${allowedOrigins.join(', ')}`);
         callback(new Error('CORS 정책에 의해 허용되지 않습니다.'));
       }
     }
