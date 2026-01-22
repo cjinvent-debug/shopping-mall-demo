@@ -13,7 +13,12 @@ function CategoryPage() {
 
   // 페이지 마운트 및 카테고리 변경 시 스크롤을 맨 위로 이동
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    // requestAnimationFrame을 사용하여 레이아웃 리플로우 후 스크롤 처리
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: 'instant' })
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+    })
     fetchProducts()
   }, [categoryName])
 

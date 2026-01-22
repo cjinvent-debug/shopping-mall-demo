@@ -8,8 +8,13 @@ function ScrollToTop() {
   const { pathname } = useLocation()
 
   useEffect(() => {
-    // 페이지 전환 시 스크롤을 즉시 맨 위로 이동 (애니메이션 없이)
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    // requestAnimationFrame을 사용하여 레이아웃 리플로우 후 스크롤 처리
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: 'instant' })
+      // 추가로 document.documentElement도 설정하여 확실하게 처리
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+    })
   }, [pathname])
 
   return null

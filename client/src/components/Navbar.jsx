@@ -140,31 +140,29 @@ function Navbar() {
             )}
           </button>
           
-          {/* 로그인된 사용자 정보 */}
-          {!loading && user && (
-            <>
-              <span 
-                className="navbar-user-name" 
-                onClick={handleUserNameClick}
-                style={{ cursor: 'pointer' }}
+          {/* 로그인된 사용자 정보 - 항상 렌더링하되 visibility로 제어하여 높이 고정 */}
+          <div className={`navbar-user-info ${(!loading && user) ? 'visible' : 'hidden'}`}>
+            <span 
+              className="navbar-user-name" 
+              onClick={handleUserNameClick}
+              style={{ cursor: 'pointer' }}
+            >
+              {user?.name || ''}
+            </span>
+            <button className="navbar-logout-button" onClick={handleLogout}>
+              로그아웃
+            </button>
+            {user?.userType === 'ADMIN' && (
+              <button 
+                className="navbar-admin-badge"
+                onClick={handleAdminClick}
+                aria-label="관리자 페이지"
               >
-                {user.name}
-              </span>
-              <button className="navbar-logout-button" onClick={handleLogout}>
-                로그아웃
+                <span className="navbar-admin-icon">👑</span>
+                <span className="navbar-admin-text">관리자</span>
               </button>
-              {user.userType === 'ADMIN' && (
-                <button 
-                  className="navbar-admin-badge"
-                  onClick={handleAdminClick}
-                  aria-label="관리자 페이지"
-                >
-                  <span className="navbar-admin-icon">👑</span>
-                  <span className="navbar-admin-text">관리자</span>
-                </button>
-              )}
-            </>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </header>

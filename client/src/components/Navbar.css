@@ -7,9 +7,12 @@
   top: 0;
   z-index: 100;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  min-height: 80px; /* 최소 높이 고정으로 레이아웃 시프트 방지 */
+  height: 80px; /* 높이 완전 고정으로 레이아웃 시프트 방지 */
   display: flex;
   align-items: center;
+  will-change: transform; /* 하드웨어 가속 */
+  transform: translateZ(0); /* GPU 가속 활성화 */
+  contain: layout style paint; /* 레이아웃 격리 */
 }
 
 .navbar-container {
@@ -73,8 +76,9 @@
   display: flex;
   gap: 1rem;
   align-items: center;
-  min-height: 40px; /* 최소 높이 고정으로 레이아웃 시프트 방지 */
+  height: 40px; /* 높이 완전 고정 */
   flex-wrap: nowrap; /* 줄바꿈 방지 */
+  position: relative; /* 자식 요소 위치 기준 */
 }
 
 .navbar-icon-button {
@@ -124,12 +128,37 @@
   color: #dc3545;
 }
 
+/* Navbar 내 사용자 정보 컨테이너 */
+.navbar-user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 40px; /* 고정 높이 */
+  flex-shrink: 0;
+  transition: none; /* transition 제거로 레이아웃 시프트 방지 */
+  min-width: 0; /* flex 축소 허용 */
+}
+
+.navbar-user-info.visible {
+  visibility: visible;
+  opacity: 1;
+  min-width: auto;
+}
+
+.navbar-user-info.hidden {
+  visibility: hidden;
+  opacity: 0;
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
+  pointer-events: none; /* 클릭 이벤트 차단 */
+}
+
 /* Navbar 내 사용자 정보 */
 .navbar-user-name {
   font-size: 1rem;
   font-weight: 600;
   color: #333;
-  margin-left: 0.5rem;
   white-space: nowrap; /* 텍스트 줄바꿈 방지 */
   flex-shrink: 0; /* 축소 방지 */
 }
