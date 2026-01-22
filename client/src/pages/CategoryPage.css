@@ -22,6 +22,12 @@
 .category-icon {
   font-size: 4rem;
   margin-bottom: 1rem;
+  width: 4rem; /* 크기 고정으로 레이아웃 시프트 방지 */
+  height: 4rem; /* 높이도 함께 지정 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* 축소 방지 */
 }
 
 .category-title {
