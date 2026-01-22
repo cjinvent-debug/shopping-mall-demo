@@ -11,7 +11,9 @@ function CategoryPage() {
   const [products, setProducts] = useState([])
   const [loadingProducts, setLoadingProducts] = useState(true)
 
+  // 페이지 마운트 및 카테고리 변경 시 스크롤을 맨 위로 이동
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
     fetchProducts()
   }, [categoryName])
 

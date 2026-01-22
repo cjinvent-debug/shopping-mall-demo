@@ -13,11 +13,13 @@ import CategoryPage from './pages/CategoryPage'
 import Admin from './pages/Admin'
 import AdminProductNew from './pages/AdminProductNew'
 import AdminOrder from './pages/AdminOrder'
+import ScrollToTop from './components/ScrollToTop'
 import './App.css'
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="app-container">
         <Routes>
           <Route path="/" element={<Home />} />

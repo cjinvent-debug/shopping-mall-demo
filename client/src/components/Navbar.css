@@ -7,6 +7,9 @@
   top: 0;
   z-index: 100;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  min-height: 80px; /* 최소 높이 고정으로 레이아웃 시프트 방지 */
+  display: flex;
+  align-items: center;
 }
 
 .navbar-container {
@@ -16,6 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 
 .navbar-left {
@@ -69,6 +73,8 @@
   display: flex;
   gap: 1rem;
   align-items: center;
+  min-height: 40px; /* 최소 높이 고정으로 레이아웃 시프트 방지 */
+  flex-wrap: nowrap; /* 줄바꿈 방지 */
 }
 
 .navbar-icon-button {
@@ -124,6 +130,8 @@
   font-weight: 600;
   color: #333;
   margin-left: 0.5rem;
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  flex-shrink: 0; /* 축소 방지 */
 }
 
 .navbar-logout-button {
@@ -137,6 +145,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
+  flex-shrink: 0; /* 축소 방지 */
 }
 
 .navbar-logout-button:hover {
@@ -158,6 +167,7 @@
   white-space: nowrap;
   cursor: pointer;
   transition: all 0.3s ease;
+  flex-shrink: 0; /* 축소 방지 */
 }
 
 .navbar-admin-badge:hover {
