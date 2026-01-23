@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react'
+import { useCallback, useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '../contexts/UserContext'
 import axios from 'axios'
@@ -9,6 +9,12 @@ function Navbar() {
   const navigate = useNavigate()
   const { user, loading, logout } = useUser()
   const [cartCount, setCartCount] = useState(0)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState([])
+  const [isSearching, setIsSearching] = useState(false)
+  const searchInputRef = useRef(null)
+  const searchTimeoutRef = useRef(null)
 
   const fetchCartCount = useCallback(async () => {
     try {
@@ -93,6 +99,74 @@ function Navbar() {
     navigate(`/category/${category}`)
   }, [navigate])
 
+  const handleSearchClick = useCallback(() => {
+    setIsSearchOpen(true)
+    // 모달이 열린 후 입력 필드에 포커스
+    setTimeout(() => {
+      searchInputRef.current?.focus()
+    }, 100)
+  }, [])
+
+  const handleSearchClose = useCallback(() => {
+    setIsSearchOpen(false)
+    setSearchQuery('')
+    setSearchResults([])
+  }, [])
+
+  const handleSearchChange = useCallback((e) => {
+    const query = e.target.value
+    setSearchQuery(query)
+
+    // 기존 타이머 클리어
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current)
+    }
+
+    // 검색어가 없으면 결과 초기화
+    if (!query.trim()) {
+      setSearchResults([])
+      setIsSearching(false)
+      return
+    }
+
+    // 디바운싱: 300ms 후 검색 실행
+    setIsSearching(true)
+    searchTimeoutRef.current = setTimeout(async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/products`, {
+          params: {
+            search: query,
+            limit: 10
+          }
+        })
+        if (response.data.success) {
+          setSearchResults(response.data.data || [])
+        }
+      } catch (error) {
+        console.error('상품 검색 오류:', error)
+        setSearchResults([])
+      } finally {
+        setIsSearching(false)
+      }
+    }, 300)
+  }, [])
+
+  const handleSearchResultClick = useCallback((productId) => {
+    navigate(`/product/${productId}`)
+    handleSearchClose()
+  }, [navigate, handleSearchClose])
+
+  // ESC 키로 검색 모달 닫기
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isSearchOpen) {
+        handleSearchClose()
+      }
+    }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [isSearchOpen, handleSearchClose])
+
   return (
     <header className="navbar-header">
       <div className="navbar-container">
@@ -119,7 +193,11 @@ function Navbar() {
         </nav>
 
         <div className="navbar-utils">
-          <button className="navbar-icon-button" aria-label="검색">
+          <button 
+            className="navbar-icon-button search-button" 
+            aria-label="검색"
+            onClick={handleSearchClick}
+          >
             <span>🔍</span>
           </button>
           <button 
@@ -127,7 +205,7 @@ function Navbar() {
             aria-label="사용자" 
             onClick={handleLoginClick}
           >
-            <span>👤</span>
+            <span className="user-icon">👤</span>
           </button>
           <button 
             className="navbar-icon-button cart-button" 
@@ -165,6 +243,71 @@ function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* 검색 모달 */}
+      {isSearchOpen && (
+        <div className="search-modal-overlay" onClick={handleSearchClose}>
+          <div className="search-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="search-modal-header">
+              <h2>상품 검색</h2>
+              <button 
+                className="search-modal-close" 
+                onClick={handleSearchClose}
+                aria-label="닫기"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="search-modal-input-container">
+              <input
+                ref={searchInputRef}
+                type="text"
+                className="search-modal-input"
+                placeholder="상품명 또는 상품번호를 입력하세요..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+              {isSearching && <div className="search-loading">검색 중...</div>}
+            </div>
+            <div className="search-results">
+              {searchQuery.trim() && !isSearching && searchResults.length === 0 && (
+                <div className="search-no-results">
+                  검색 결과가 없습니다.
+                </div>
+              )}
+              {searchResults.length > 0 && (
+                <div className="search-results-list">
+                  {searchResults.map((product) => (
+                    <div
+                      key={product._id}
+                      className="search-result-item"
+                      onClick={() => handleSearchResultClick(product._id)}
+                    >
+                      <div className="search-result-image">
+                        {product.image && product.image.startsWith('http') ? (
+                          <img src={product.image} alt={product.name} />
+                        ) : (
+                          <span>{product.image || '📷'}</span>
+                        )}
+                      </div>
+                      <div className="search-result-info">
+                        <h3 className="search-result-name">{product.name}</h3>
+                        <p className="search-result-number">{product.productNumber}</p>
+                        <p className="search-result-price">
+                          {product.price && product.price > 0
+                            ? product.price.toLocaleString('ko-KR') + ' 원'
+                            : '가격 문의'
+                          }
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   )
 }
