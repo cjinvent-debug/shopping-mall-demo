@@ -7,7 +7,7 @@
   top: 0;
   z-index: 100;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  height: 80px; /* 높이 완전 고정으로 레이아웃 시프트 방지 */
+  min-height: 80px; /* 최소 높이 */
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -24,6 +24,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  flex-shrink: 0;
 }
 
 .navbar-left {
@@ -246,15 +247,17 @@
 
 /* 검색 영역 스타일 - 다크 틸 색상 배경 */
 .search-bar-container {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
+  position: relative;
+  width: 100%;
   background: #202c2b;
-  padding: 2rem 0;
-  z-index: 999;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem 0;
+  z-index: 99;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   animation: slideDown 0.3s ease;
+  margin-top: 0;
+  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 
 @keyframes slideDown {
@@ -280,19 +283,24 @@
   align-items: center;
   background: white;
   border-radius: 50px;
-  padding: 0.75rem 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  gap: 0.75rem;
+  padding: 0.875rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  gap: 0.875rem;
   max-width: 800px;
+  width: 90%;
   margin: 0 auto;
+  min-height: 50px;
 }
 
 .search-icon-left {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #333;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  width: 20px;
+  height: 20px;
 }
 
 .search-bar-input {
@@ -303,10 +311,12 @@
   padding: 0;
   color: #333;
   background: transparent;
+  min-width: 0;
 }
 
 .search-bar-input::placeholder {
   color: #999;
+  font-size: 1rem;
 }
 
 .search-loading-indicator {
