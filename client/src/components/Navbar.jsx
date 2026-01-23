@@ -13,6 +13,7 @@ function Navbar() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [isSearching, setIsSearching] = useState(false)
+  const [searchCategory, setSearchCategory] = useState('전체')
   const searchInputRef = useRef(null)
   const searchTimeoutRef = useRef(null)
 
@@ -100,12 +101,18 @@ function Navbar() {
   }, [navigate])
 
   const handleSearchClick = useCallback(() => {
-    setIsSearchOpen(true)
-    // 모달이 열린 후 입력 필드에 포커스
-    setTimeout(() => {
-      searchInputRef.current?.focus()
-    }, 100)
-  }, [])
+    setIsSearchOpen(!isSearchOpen)
+    if (!isSearchOpen) {
+      // 검색창이 열릴 때 입력 필드에 포커스
+      setTimeout(() => {
+        searchInputRef.current?.focus()
+      }, 100)
+    } else {
+      // 검색창이 닫힐 때 검색어 초기화
+      setSearchQuery('')
+      setSearchResults([])
+    }
+  }, [isSearchOpen])
 
   const handleSearchClose = useCallback(() => {
     setIsSearchOpen(false)
@@ -133,12 +140,15 @@ function Navbar() {
     setIsSearching(true)
     searchTimeoutRef.current = setTimeout(async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/products`, {
-          params: {
-            search: query,
-            limit: 10
-          }
-        })
+        const params = {
+          search: query,
+          limit: 10
+        }
+        // 카테고리 필터 적용
+        if (searchCategory !== '전체') {
+          params.category = searchCategory
+        }
+        const response = await axios.get(`${API_BASE_URL}/api/products`, { params })
         if (response.data.success) {
           setSearchResults(response.data.data || [])
         }
@@ -149,14 +159,14 @@ function Navbar() {
         setIsSearching(false)
       }
     }, 300)
-  }, [])
+  }, [searchCategory])
 
   const handleSearchResultClick = useCallback((productId) => {
     navigate(`/product/${productId}`)
     handleSearchClose()
   }, [navigate, handleSearchClose])
 
-  // ESC 키로 검색 모달 닫기
+  // ESC 키로 검색창 닫기
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape' && isSearchOpen) {
@@ -166,6 +176,40 @@ function Navbar() {
     window.addEventListener('keydown', handleEscape)
     return () => window.removeEventListener('keydown', handleEscape)
   }, [isSearchOpen, handleSearchClose])
+
+  // 검색 카테고리 변경 시 검색 재실행
+  useEffect(() => {
+    if (searchQuery.trim() && isSearchOpen) {
+      // 기존 타이머 클리어
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current)
+      }
+
+      // 디바운싱: 300ms 후 검색 실행
+      setIsSearching(true)
+      searchTimeoutRef.current = setTimeout(async () => {
+        try {
+          const params = {
+            search: searchQuery,
+            limit: 10
+          }
+          // 카테고리 필터 적용
+          if (searchCategory !== '전체') {
+            params.category = searchCategory
+          }
+          const response = await axios.get(`${API_BASE_URL}/api/products`, { params })
+          if (response.data.success) {
+            setSearchResults(response.data.data || [])
+          }
+        } catch (error) {
+          console.error('상품 검색 오류:', error)
+          setSearchResults([])
+        } finally {
+          setIsSearching(false)
+        }
+      }, 300)
+    }
+  }, [searchCategory, searchQuery, isSearchOpen])
 
   return (
     <header className="navbar-header">
@@ -244,67 +288,84 @@ function Navbar() {
         </div>
       </div>
 
-      {/* 검색 모달 */}
+      {/* 검색 영역 */}
       {isSearchOpen && (
-        <div className="search-modal-overlay" onClick={handleSearchClose}>
-          <div className="search-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="search-modal-header">
-              <h2>상품 검색</h2>
-              <button 
-                className="search-modal-close" 
-                onClick={handleSearchClose}
-                aria-label="닫기"
-              >
-                ✕
-              </button>
-            </div>
-            <div className="search-modal-input-container">
+        <div className="search-bar-container">
+          <div className="search-bar-wrapper">
+            <div className="search-input-wrapper">
               <input
                 ref={searchInputRef}
                 type="text"
-                className="search-modal-input"
-                placeholder="상품명 또는 상품번호를 입력하세요..."
+                className="search-bar-input"
+                placeholder="검색어를 입력해주세요."
                 value={searchQuery}
                 onChange={handleSearchChange}
               />
-              {isSearching && <div className="search-loading">검색 중...</div>}
+              <div className="search-category-dropdown">
+                <button 
+                  className="search-category-button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    // 드롭다운 토글 (간단한 구현)
+                    const categories = ['전체', '카메라', '렌즈']
+                    const currentIndex = categories.indexOf(searchCategory)
+                    const nextIndex = (currentIndex + 1) % categories.length
+                    setSearchCategory(categories[nextIndex])
+                  }}
+                >
+                  <span className="search-category-text">{searchCategory}</span>
+                  <span className="search-category-icon">▼</span>
+                </button>
+              </div>
+              <button 
+                className="search-submit-button"
+                onClick={() => {
+                  if (searchQuery.trim()) {
+                    handleSearchChange({ target: { value: searchQuery } })
+                  }
+                }}
+                aria-label="검색"
+              >
+                <span className="search-icon">🔍</span>
+              </button>
             </div>
-            <div className="search-results">
-              {searchQuery.trim() && !isSearching && searchResults.length === 0 && (
-                <div className="search-no-results">
-                  검색 결과가 없습니다.
-                </div>
-              )}
-              {searchResults.length > 0 && (
-                <div className="search-results-list">
-                  {searchResults.map((product) => (
-                    <div
-                      key={product._id}
-                      className="search-result-item"
-                      onClick={() => handleSearchResultClick(product._id)}
-                    >
-                      <div className="search-result-image">
-                        {product.image && product.image.startsWith('http') ? (
-                          <img src={product.image} alt={product.name} />
-                        ) : (
-                          <span>{product.image || '📷'}</span>
-                        )}
-                      </div>
-                      <div className="search-result-info">
-                        <h3 className="search-result-name">{product.name}</h3>
-                        <p className="search-result-number">{product.productNumber}</p>
-                        <p className="search-result-price">
-                          {product.price && product.price > 0
-                            ? product.price.toLocaleString('ko-KR') + ' 원'
-                            : '가격 문의'
-                          }
-                        </p>
-                      </div>
+            {isSearching && (
+              <div className="search-loading-indicator">검색 중...</div>
+            )}
+            {searchQuery.trim() && !isSearching && searchResults.length > 0 && (
+              <div className="search-results-dropdown">
+                {searchResults.map((product) => (
+                  <div
+                    key={product._id}
+                    className="search-result-item"
+                    onClick={() => handleSearchResultClick(product._id)}
+                  >
+                    <div className="search-result-image">
+                      {product.image && product.image.startsWith('http') ? (
+                        <img src={product.image} alt={product.name} />
+                      ) : (
+                        <span>{product.image || '📷'}</span>
+                      )}
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
+                    <div className="search-result-info">
+                      <h3 className="search-result-name">{product.name}</h3>
+                      <p className="search-result-number">{product.productNumber}</p>
+                      <p className="search-result-price">
+                        {product.price && product.price > 0
+                          ? product.price.toLocaleString('ko-KR') + ' 원'
+                          : '가격 문의'
+                        }
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {searchQuery.trim() && !isSearching && searchResults.length === 0 && (
+              <div className="search-no-results">
+                검색 결과가 없습니다.
+              </div>
+            )}
           </div>
         </div>
       )}
