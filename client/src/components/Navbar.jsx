@@ -293,41 +293,15 @@ function Navbar() {
         <div className="search-bar-container">
           <div className="search-bar-wrapper">
             <div className="search-input-wrapper">
+              <span className="search-icon-left">🔍</span>
               <input
                 ref={searchInputRef}
                 type="text"
                 className="search-bar-input"
-                placeholder="검색어를 입력해주세요."
+                placeholder="검색"
                 value={searchQuery}
                 onChange={handleSearchChange}
               />
-              <div className="search-category-dropdown">
-                <button 
-                  className="search-category-button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    // 드롭다운 토글 (간단한 구현)
-                    const categories = ['전체', '카메라', '렌즈']
-                    const currentIndex = categories.indexOf(searchCategory)
-                    const nextIndex = (currentIndex + 1) % categories.length
-                    setSearchCategory(categories[nextIndex])
-                  }}
-                >
-                  <span className="search-category-text">{searchCategory}</span>
-                  <span className="search-category-icon">▼</span>
-                </button>
-              </div>
-              <button 
-                className="search-submit-button"
-                onClick={() => {
-                  if (searchQuery.trim()) {
-                    handleSearchChange({ target: { value: searchQuery } })
-                  }
-                }}
-                aria-label="검색"
-              >
-                <span className="search-icon">🔍</span>
-              </button>
             </div>
             {isSearching && (
               <div className="search-loading-indicator">검색 중...</div>
